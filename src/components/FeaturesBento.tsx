@@ -3,7 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CheckCircle2, Sparkles, Layers } from 'lucide-react';
 import { FEATURE_STAGES, ScreenStageId } from '../data/campusData';
-import { PhoneShowcase } from './PhoneShowcase';
+import { AdaptivePhone } from './AdaptivePhone';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -280,7 +280,7 @@ export const FeaturesBento: React.FC = () => {
 
             {/* 3D Scroll-Tilted Mobile Phone + Pop-Up Badges */}
             <div ref={mobilePhoneRigRef} className="relative z-10 preserve-3d">
-              <PhoneShowcase
+              <AdaptivePhone
                 activeStage={currentStage.id}
                 onSelectStage={(id) => {
                   const targetIdx = FEATURE_STAGES.findIndex((s) => s.id === id);
@@ -389,7 +389,7 @@ export const FeaturesBento: React.FC = () => {
               </div>
 
               <div ref={desktopPhoneRigRef} className="relative z-10 preserve-3d">
-                <PhoneShowcase
+                <AdaptivePhone
                   activeStage={currentStage.id}
                   onSelectStage={(id) => {
                     const targetIdx = FEATURE_STAGES.findIndex((s) => s.id === id);
@@ -457,7 +457,7 @@ export const FeaturesBento: React.FC = () => {
                       : 'hover:brightness-110'
                   }`}
                 >
-                  <PhoneShowcase
+                  <AdaptivePhone
                     activeStage={screen.id}
                     showPopups={false}
                     compact={true}

@@ -25,7 +25,48 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
   const safetyContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+
     const ctx = gsap.context(() => {
+      // Classic desktop: staggered pop-up when the card grid enters view
+      if (isDesktop) {
+        if (stepsContainerRef.current) {
+          gsap.fromTo(
+            stepsContainerRef.current.querySelectorAll('.step-popup-card'),
+            { y: 40, scale: 0.92 },
+            {
+              y: 0,
+              scale: 1,
+              duration: 0.65,
+              stagger: 0.12,
+              ease: 'back.out(1.7)',
+              scrollTrigger: {
+                trigger: stepsContainerRef.current,
+                start: 'top 85%',
+              },
+            }
+          );
+        }
+        if (safetyContainerRef.current) {
+          gsap.fromTo(
+            safetyContainerRef.current.querySelectorAll('.safety-popup-card'),
+            { y: 36, scale: 0.93 },
+            {
+              y: 0,
+              scale: 1,
+              duration: 0.6,
+              stagger: 0.1,
+              ease: 'back.out(1.65)',
+              scrollTrigger: {
+                trigger: safetyContainerRef.current,
+                start: 'top 85%',
+              },
+            }
+          );
+        }
+        return;
+      }
+
       // Scroll-scrubbed 3D pop-up for each onboarding step card (Mobile & Desktop)
       if (stepsContainerRef.current) {
         const stepCards = stepsContainerRef.current.querySelectorAll('.step-popup-card');
@@ -149,13 +190,13 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
 
           <div
             ref={stepsContainerRef}
-            className="mt-12 sm:mt-14 grid gap-5 md:grid-cols-3 perspective-stage"
+            className="mt-12 sm:mt-14 grid gap-5 md:grid-cols-3 perspective-stage lg:[perspective:none]"
           >
             {steps.map((s) => (
               <div
                 key={s.num}
                 onClick={onOpenJoin}
-                className="step-popup-card group cursor-pointer rounded-3xl border border-white/[0.09] bg-[#0d0f17] p-6 sm:p-7 hover:-translate-y-1.5 hover:border-[#0095f6]/50 transition-colors duration-300"
+                className="step-popup-card group cursor-pointer rounded-3xl border border-white/[0.09] bg-[#0d0f17] p-6 sm:p-7 hover:-translate-y-1.5 hover:border-[#0095f6]/50 transition-colors lg:transition-all duration-300"
               >
                 <div className="flex items-center justify-between">
                   <span className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#0095f6] font-display text-[14px] sm:text-[15px] font-extrabold text-white shadow-[0_8px_20px_rgba(0,149,246,0.4)]">
@@ -198,7 +239,7 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
 
           <div
             ref={safetyContainerRef}
-            className="mt-12 sm:mt-14 grid gap-4 sm:gap-5 sm:grid-cols-2 perspective-stage"
+            className="mt-12 sm:mt-14 grid gap-4 sm:gap-5 sm:grid-cols-2 perspective-stage lg:[perspective:none]"
           >
             {safetyItems.map((card) => {
               const Icon = card.icon;
