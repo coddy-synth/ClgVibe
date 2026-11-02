@@ -112,16 +112,16 @@ export const FEATURE_STAGES: FeatureStage[] = [
     title: 'Clubs you start &',
     highlight: 'UNO between lectures.',
     description:
-      'Rally 10 verified batchmates to launch a student-run campus Chapter, or jump into a live multiplayer UNO & Ludo room with your batch between classes.',
+      'Rally 10 backers and a faculty advisor to launch an official campus Chapter, or jump into a live multiplayer UNO & Ludo room with your batchmates between classes.',
     accentColor: '#06b6d4',
     glowClass: 'from-cyan-500/35 via-[#0095f6]/20 to-indigo-600/10',
     bullets: [
-      '100% student-run Chapters — start with 10 backers & hand down when you graduate',
+      'Launch student Chapters with 10 backers & faculty sign-off',
       'Real-time 4-player UNO & party rooms with live reactions',
       'Hostel & batch leaderboards across your campus',
     ],
     metricLabel: 'Club Launch Threshold',
-    metricValue: '10 Student Backers',
+    metricValue: '10 Backers + Advisor',
   },
 ];
 

@@ -8,7 +8,7 @@ import {
   Menu,
   X,
 } from 'lucide-react';
-import { AdaptivePhone } from './components/AdaptivePhone';
+import { PhoneShowcase } from './components/PhoneShowcase';
 import { FeaturesBento } from './components/FeaturesBento';
 import { ChaosVsVibe } from './components/ChaosVsVibe';
 import { CollegeLaunchpad } from './components/CollegeLaunchpad';
@@ -20,6 +20,7 @@ export function App() {
   const [heroStage, setHeroStage] = useState<ScreenStageId>('feed');
   const [joinOpen, setJoinOpen] = useState(false);
   const [appOpen, setAppOpen] = useState(false);
+  const [facultyOpen, setFacultyOpen] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
   const progressBarRef = useRef<HTMLDivElement>(null);
@@ -56,51 +57,17 @@ export function App() {
           }
         );
 
-        const isDesktopView = window.matchMedia('(min-width: 1024px)').matches;
-
-        if (isDesktopView) {
-          // Classic desktop hero phone entrance
-          gsap.fromTo(
-            heroPhoneWrapRef.current,
-            { opacity: 0, y: 40, scale: 0.94 },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.85,
-              ease: 'power3.out',
-            }
-          );
-        } else {
-          gsap.fromTo(
-            heroPhoneWrapRef.current,
-            { opacity: 0, y: 48, rotateX: 14, rotateY: -12, scale: 0.92 },
-            {
-              opacity: 1,
-              y: 0,
-              rotateX: 6,
-              rotateY: -8,
-              scale: 1,
-              duration: 0.9,
-              ease: 'power3.out',
-            }
-          );
-
-          // Scroll-Scrubbed 3D Perspective Tilt on the Mobile Hero Phone
-          gsap.to(heroPhoneWrapRef.current, {
-            rotateX: -4,
-            rotateY: 10,
-            y: -24,
-            scale: 1.03,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: heroSectionRef.current,
-              start: 'top top',
-              end: 'bottom top',
-              scrub: 0.5,
-            },
-          });
-        }
+        gsap.fromTo(
+          heroPhoneWrapRef.current,
+          { opacity: 0, y: 40, scale: 0.94 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.85,
+            ease: 'power3.out',
+          }
+        );
       }
     });
 
@@ -296,15 +263,14 @@ export function App() {
                   className="hero-anim mt-8 inline-flex items-center gap-2 text-[12px] sm:text-[12.5px] font-semibold text-slate-400 hover:text-white transition-colors"
                 >
                   <ChevronDown className="h-4 w-4 text-[#0095f6] animate-bounce" />
-                  <span className="lg:hidden">Scroll to trigger 3D screen showdown</span>
-                  <span className="hidden lg:inline">Scroll to explore all 6 application screens</span>
+                  <span>Scroll to explore all 6 application screens</span>
                 </a>
               </div>
 
-              {/* Right: 3D Scroll-Tilted Phone + Pop-Up Cards + Quick Switcher */}
-              <div className="flex flex-col items-center perspective-stage lg:[perspective:none] lg:[transform-style:flat]">
-                <div ref={heroPhoneWrapRef} className="preserve-3d lg:[transform-style:flat]">
-                  <AdaptivePhone
+              {/* Right: Interactive Hero Phone + Pop-Up Cards + Quick Switcher */}
+              <div className="flex flex-col items-center">
+                <div ref={heroPhoneWrapRef}>
+                  <PhoneShowcase
                     activeStage={heroStage}
                     onSelectStage={setHeroStage}
                     showPopups={true}
@@ -336,8 +302,11 @@ export function App() {
         {/* SCROLL-DRIVEN 6-FEATURE SHOWDOWN + 5-PHONE SCREEN FAN-OUT */}
         <FeaturesBento />
 
-        {/* SCROLL POP-UP ONBOARDING STEPS + SAFETY SHIELD */}
-        <ChaosVsVibe onOpenJoin={() => setJoinOpen(true)} />
+        {/* SCROLL POP-UP ONBOARDING STEPS + SAFETY SHIELD + FACULTY */}
+        <ChaosVsVibe
+          onOpenJoin={() => setJoinOpen(true)}
+          onOpenFaculty={() => setFacultyOpen(true)}
+        />
 
         {/* CAMPUS NETWORK + LAUNCH FINALE + MODALS */}
         <CollegeLaunchpad
@@ -345,6 +314,8 @@ export function App() {
           onCloseJoin={() => setJoinOpen(false)}
           appOpen={appOpen}
           onCloseApp={() => setAppOpen(false)}
+          facultyOpen={facultyOpen}
+          onCloseFaculty={() => setFacultyOpen(false)}
           onOpenJoin={() => setJoinOpen(true)}
           onOpenApp={() => setAppOpen(true)}
         />
