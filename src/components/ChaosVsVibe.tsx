@@ -28,42 +28,52 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      // Scroll-scrubbed 3D pop-up for each onboarding step card (Mobile & Desktop)
       if (stepsContainerRef.current) {
         const stepCards = stepsContainerRef.current.querySelectorAll('.step-popup-card');
-        gsap.fromTo(
-          stepCards,
-          { y: 40, scale: 0.92 },
-          {
-            y: 0,
-            scale: 1,
-            duration: 0.65,
-            stagger: 0.12,
-            ease: 'back.out(1.7)',
-            scrollTrigger: {
-              trigger: stepsContainerRef.current,
-              start: 'top 85%',
-            },
-          }
-        );
+        stepCards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            { opacity: 0.2, y: 52, scale: 0.88, rotateX: 14 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotateX: 0,
+              ease: 'back.out(1.7)',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 90%',
+                end: 'top 55%',
+                scrub: 0.4,
+              },
+            }
+          );
+        });
       }
 
+      // Scroll-scrubbed 3D pop-up for each safety shield card (Mobile & Desktop)
       if (safetyContainerRef.current) {
         const safetyCards = safetyContainerRef.current.querySelectorAll('.safety-popup-card');
-        gsap.fromTo(
-          safetyCards,
-          { y: 36, scale: 0.93 },
-          {
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            stagger: 0.1,
-            ease: 'back.out(1.65)',
-            scrollTrigger: {
-              trigger: safetyContainerRef.current,
-              start: 'top 85%',
-            },
-          }
-        );
+        safetyCards.forEach((card) => {
+          gsap.fromTo(
+            card,
+            { opacity: 0.2, y: 48, scale: 0.9, rotateX: 12 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              rotateX: 0,
+              ease: 'back.out(1.65)',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 90%',
+                end: 'top 55%',
+                scrub: 0.4,
+              },
+            }
+          );
+        });
       }
     });
 
@@ -120,7 +130,7 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
 
   return (
     <>
-      {/* HOW IT WORKS: POP-UP CARDS ON SCROLL */}
+      {/* HOW IT WORKS: SCROLL-REACTIVE 3D POP-UP CARDS */}
       <section
         id="how-it-works"
         className="scroll-mt-20 bg-[#05060a] py-20 sm:py-28 border-t border-white/[0.07]"
@@ -141,13 +151,13 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
 
           <div
             ref={stepsContainerRef}
-            className="mt-12 sm:mt-14 grid gap-5 md:grid-cols-3"
+            className="mt-12 sm:mt-14 grid gap-5 md:grid-cols-3 perspective-stage"
           >
             {steps.map((s) => (
               <div
                 key={s.num}
                 onClick={onOpenJoin}
-                className="step-popup-card group cursor-pointer rounded-3xl border border-white/[0.09] bg-[#0d0f17] p-6 sm:p-7 hover:-translate-y-1.5 hover:border-[#0095f6]/50 transition-all duration-300"
+                className="step-popup-card group cursor-pointer rounded-3xl border border-white/[0.09] bg-[#0d0f17] p-6 sm:p-7 hover:-translate-y-1.5 hover:border-[#0095f6]/50 transition-colors duration-300"
               >
                 <div className="flex items-center justify-between">
                   <span className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-[#0095f6] font-display text-[14px] sm:text-[15px] font-extrabold text-white shadow-[0_8px_20px_rgba(0,149,246,0.4)]">
@@ -169,7 +179,7 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
         </div>
       </section>
 
-      {/* SAFETY & TRUST: POP-UP SHIELD GRID */}
+      {/* SAFETY & TRUST: SCROLL-REACTIVE 3D POP-UP SHIELD GRID */}
       <section
         id="safety"
         className="scroll-mt-20 bg-[#080910] py-20 sm:py-28 border-t border-white/[0.07]"
@@ -190,7 +200,7 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
 
           <div
             ref={safetyContainerRef}
-            className="mt-12 sm:mt-14 grid gap-4 sm:gap-5 sm:grid-cols-2"
+            className="mt-12 sm:mt-14 grid gap-4 sm:gap-5 sm:grid-cols-2 perspective-stage"
           >
             {safetyItems.map((card) => {
               const Icon = card.icon;
