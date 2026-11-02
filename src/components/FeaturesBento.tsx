@@ -15,66 +15,123 @@ export const FeaturesBento: React.FC = () => {
   const fanSectionRef = useRef<HTMLDivElement>(null);
   const [focusedFanScreen, setFocusedFanScreen] = useState<ScreenStageId>('feed');
 
-  // 1. Unified Scroll-Driven Feature Showdown (Identical scroll response on Mobile & Desktop!)
+  // 1. Scroll-Driven Feature Showdown
+  //    - Mobile / Tablet (< 1024px): scrubbed 3D pop-ups + sticky top phone stage (unchanged)
+  //    - Desktop (>= 1024px): original classic showdown (toggle pop-ups + sticky right-hand phone)
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      if (!sectionRef.current) return;
+    const mm = gsap.matchMedia();
 
-      const stageCards = sectionRef.current.querySelectorAll('.feature-scroll-card');
+    mm.add(
+      {
+        isDesktop: '(min-width: 1024px)',
+      },
+      (context) => {
+        if (!sectionRef.current) return;
+        const { isDesktop } = context.conditions as { isDesktop: boolean };
 
-      stageCards.forEach((card, index) => {
-        // Elastic 3D pop-up entrance as each feature card scrolls into view
-        gsap.fromTo(
-          card,
-          { opacity: 0.25, y: 48, scale: 0.92, rotateX: 10 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            rotateX: 0,
-            duration: 0.6,
-            ease: 'back.out(1.65)',
-            scrollTrigger: {
+        const stageCards = sectionRef.current.querySelectorAll('.feature-scroll-card');
+
+        stageCards.forEach((card, index) => {
+          if (isDesktop) {
+            // Classic desktop pop-up entrance as each card enters the viewport
+            gsap.fromTo(
+              card,
+              { opacity: 0.35, y: 36, scale: 0.96 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.55,
+                ease: 'back.out(1.5)',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 82%',
+                  end: 'top 35%',
+                  toggleActions: 'play none none reverse',
+                },
+              }
+            );
+
+            // Activate corresponding phone screen when card is in focus zone
+            ScrollTrigger.create({
               trigger: card,
-              start: 'top 88%',
-              end: 'top 45%',
-              scrub: 0.4,
-            },
-          }
-        );
+              start: 'top 58%',
+              end: 'bottom 42%',
+              onEnter: () => setActiveIndex(index),
+              onEnterBack: () => setActiveIndex(index),
+            });
+          } else {
+            // Elastic 3D pop-up entrance as each feature card scrolls into view
+            gsap.fromTo(
+              card,
+              { opacity: 0.25, y: 48, scale: 0.92, rotateX: 10 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                rotateX: 0,
+                duration: 0.6,
+                ease: 'back.out(1.65)',
+                scrollTrigger: {
+                  trigger: card,
+                  start: 'top 88%',
+                  end: 'top 45%',
+                  scrub: 0.4,
+                },
+              }
+            );
 
-        // Switch active screen + pop-up badges as each card enters focus zone (works on mobile & desktop)
-        ScrollTrigger.create({
-          trigger: card,
-          start: 'top 68%',
-          end: 'bottom 38%',
-          onEnter: () => setActiveIndex(index),
-          onEnterBack: () => setActiveIndex(index),
+            ScrollTrigger.create({
+              trigger: card,
+              start: 'top 68%',
+              end: 'bottom 38%',
+              onEnter: () => setActiveIndex(index),
+              onEnterBack: () => setActiveIndex(index),
+            });
+          }
         });
-      });
 
-      // Continuous 3D scroll-scrubbed tilt on BOTH Desktop and Mobile sticky phone stages
-      const rigs = [desktopPhoneRigRef.current, mobilePhoneRigRef.current].filter(Boolean);
-      rigs.forEach((rig) => {
-        gsap.fromTo(
-          rig,
-          { rotateY: -11, rotateX: 6 },
-          {
-            rotateY: 11,
-            rotateX: -4,
-            ease: 'none',
-            scrollTrigger: {
-              trigger: sectionRef.current,
-              start: 'top bottom',
-              end: 'bottom top',
-              scrub: 0.5,
-            },
+        // Phone tilt while scrolling through the section
+        if (isDesktop) {
+          if (desktopPhoneRigRef.current) {
+            gsap.fromTo(
+              desktopPhoneRigRef.current,
+              { rotateY: -9, rotateX: 4 },
+              {
+                rotateY: 9,
+                rotateX: -3,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: sectionRef.current,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 0.6,
+                },
+              }
+            );
           }
-        );
-      });
-    }, sectionRef);
+        } else if (mobilePhoneRigRef.current) {
+          gsap.fromTo(
+            mobilePhoneRigRef.current,
+            { rotateY: -11, rotateX: 6 },
+            {
+              rotateY: 11,
+              rotateX: -4,
+              ease: 'none',
+              scrollTrigger: {
+                trigger: sectionRef.current,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: 0.5,
+              },
+            }
+          );
+        }
+      },
+      sectionRef
+    );
 
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   // 2. Unified 5-Phone Application Screen Fan-Out on Scroll (Responsive GSAP matchMedia for Mobile + Desktop!)
@@ -98,11 +155,11 @@ export const FeaturesBento: React.FC = () => {
         const cards = fanSectionRef.current.querySelectorAll('.fan-phone-item');
 
         const desktopOffsets = [
-          { x: -330, y: 38, rot: -14, scale: 0.85 },
-          { x: -170, y: 14, rot: -7, scale: 0.93 },
+          { x: -330, y: 38, rot: -13, scale: 0.85 },
+          { x: -170, y: 14, rot: -6.5, scale: 0.93 },
           { x: 0, y: 0, rot: 0, scale: 1 },
-          { x: 170, y: 14, rot: 7, scale: 0.93 },
-          { x: 330, y: 38, rot: 14, scale: 0.85 },
+          { x: 170, y: 14, rot: 6.5, scale: 0.93 },
+          { x: 330, y: 38, rot: 13, scale: 0.85 },
         ];
 
         const tabletOffsets = [
@@ -131,12 +188,9 @@ export const FeaturesBento: React.FC = () => {
           const target = offsets[i] || offsets[2];
           gsap.fromTo(
             card,
-            {
-              x: 0,
-              y: 55,
-              rotation: 0,
-              scale: target.scale * 0.8,
-            },
+            isDesktop
+              ? { x: target.x * 0.25, y: 40, rotation: target.rot * 0.25, scale: 0.82 }
+              : { x: 0, y: 55, rotation: 0, scale: target.scale * 0.8 },
             {
               x: target.x,
               y: target.y,
@@ -145,7 +199,7 @@ export const FeaturesBento: React.FC = () => {
               ease: 'power3.out',
               scrollTrigger: {
                 trigger: fanSectionRef.current,
-                start: 'top 82%',
+                start: isDesktop ? 'top 80%' : 'top 82%',
                 end: 'center center',
                 scrub: 0.6,
               },
@@ -174,21 +228,27 @@ export const FeaturesBento: React.FC = () => {
       <section
         id="features"
         ref={sectionRef}
-        className="relative bg-[#05060a] py-16 sm:py-28 border-t border-white/[0.07]"
+        className="relative bg-[#05060a] py-16 sm:py-28 lg:py-28 border-t border-white/[0.07]"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           {/* Section Header */}
           <div className="mx-auto max-w-2xl text-center mb-10 sm:mb-16">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.05] px-3.5 py-1 text-[12px] font-semibold text-[#0095f6]">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>Scroll-Driven Feature Showdown · {currentStage.number} / 06</span>
+              <span className="lg:hidden">
+                Scroll-Driven Feature Showdown · {currentStage.number} / 06
+              </span>
+              <span className="hidden lg:inline">Interactive Feature Showdown · 01 — 06</span>
             </div>
             <h2 className="mt-4 font-display text-balance text-[30px] sm:text-[44px] font-extrabold leading-[1.1] tracking-tight text-white">
               Everything your campus does,{' '}
               <span className="text-[#0095f6]">in one place.</span>
             </h2>
-            <p className="mt-3 text-[15px] sm:text-[17px] text-slate-400">
+            <p className="mt-3 text-[15px] sm:text-[17px] text-slate-400 lg:hidden">
               Scroll down — the 3D application screen and floating pop-up cards morph automatically with every feature.
+            </p>
+            <p className="mt-3 hidden text-[17px] text-slate-400 lg:block">
+              Scroll through each campus pillar — watch the application screen and pop-up layers react in real time.
             </p>
           </div>
 
@@ -233,19 +293,19 @@ export const FeaturesBento: React.FC = () => {
           </div>
 
           {/* Scrollytelling 2-Column Layout */}
-          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 perspective-stage">
+          <div className="grid items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 perspective-stage lg:[perspective:none] lg:[transform-style:flat]">
             {/* Left Column: 6 Scroll-Triggered Feature Cards (Scrolls over/below sticky mobile stage & beside desktop stage) */}
-            <div className="relative z-30 space-y-24 sm:space-y-20 lg:space-y-16">
+            <div className="relative z-30 space-y-24 sm:space-y-20 lg:space-y-12">
               {FEATURE_STAGES.map((stage, idx) => {
                 const isActive = idx === activeIndex;
                 return (
                   <div
                     key={stage.id}
                     onClick={() => setActiveIndex(idx)}
-                    className={`feature-scroll-card cursor-pointer rounded-3xl border p-6 sm:p-8 backdrop-blur-xl transition-all duration-300 ${
+                    className={`feature-scroll-card cursor-pointer rounded-3xl border p-6 sm:p-8 backdrop-blur-xl lg:backdrop-blur-none transition-all duration-300 ${
                       isActive
-                        ? 'border-white/25 bg-[#0d101a]/95 shadow-[0_24px_60px_rgba(0,0,0,0.85)]'
-                        : 'border-white/[0.08] bg-[#090b12]/90 hover:border-white/15'
+                        ? 'border-white/25 bg-[#0d101a]/95 lg:bg-[#0d101a] shadow-[0_24px_60px_rgba(0,0,0,0.85)] lg:shadow-[0_24px_60px_rgba(0,0,0,0.65)]'
+                        : 'border-white/[0.08] lg:border-white/[0.07] bg-[#090b12]/90 lg:bg-[#090b12]/70 hover:border-white/15'
                     }`}
                   >
                     {/* Card Top Badge */}
