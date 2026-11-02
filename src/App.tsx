@@ -20,7 +20,6 @@ export function App() {
   const [heroStage, setHeroStage] = useState<ScreenStageId>('feed');
   const [joinOpen, setJoinOpen] = useState(false);
   const [appOpen, setAppOpen] = useState(false);
-  const [facultyOpen, setFacultyOpen] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
 
   const progressBarRef = useRef<HTMLDivElement>(null);
@@ -319,11 +318,8 @@ export function App() {
         {/* SCROLL-DRIVEN 6-FEATURE SHOWDOWN + 5-PHONE SCREEN FAN-OUT */}
         <FeaturesBento />
 
-        {/* SCROLL POP-UP ONBOARDING STEPS + SAFETY SHIELD + FACULTY */}
-        <ChaosVsVibe
-          onOpenJoin={() => setJoinOpen(true)}
-          onOpenFaculty={() => setFacultyOpen(true)}
-        />
+        {/* SCROLL POP-UP ONBOARDING STEPS + SAFETY SHIELD */}
+        <ChaosVsVibe onOpenJoin={() => setJoinOpen(true)} />
 
         {/* CAMPUS NETWORK + LAUNCH FINALE + MODALS */}
         <CollegeLaunchpad
@@ -331,8 +327,6 @@ export function App() {
           onCloseJoin={() => setJoinOpen(false)}
           appOpen={appOpen}
           onCloseApp={() => setAppOpen(false)}
-          facultyOpen={facultyOpen}
-          onCloseFaculty={() => setFacultyOpen(false)}
           onOpenJoin={() => setJoinOpen(true)}
           onOpenApp={() => setAppOpen(true)}
         />

@@ -16,12 +16,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface ChaosVsVibeProps {
   onOpenJoin: () => void;
-  onOpenFaculty: () => void;
 }
 
 export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
   onOpenJoin,
-  onOpenFaculty,
 }) => {
   const stepsContainerRef = useRef<HTMLDivElement>(null);
   const safetyContainerRef = useRef<HTMLDivElement>(null);
@@ -228,7 +226,7 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
             })}
           </div>
 
-          {/* Faculty Advisor Callout */}
+          {/* 100% Student-Only Callout (No Faculty / No Admin) */}
           <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-3xl border border-white/[0.1] bg-gradient-to-r from-[#0095f6]/10 via-white/[0.03] to-transparent p-6 sm:flex-row sm:items-center sm:p-8">
             <div className="flex items-start sm:items-center gap-4">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#0095f6]/20 text-[#0095f6]">
@@ -236,19 +234,19 @@ export const ChaosVsVibe: React.FC<ChaosVsVibeProps> = ({
               </div>
               <div>
                 <h4 className="font-display text-[16px] sm:text-[17px] font-bold text-white">
-                  Faculty? Advise your students’ Chapters and approve their events.
+                  100% student-only space. Zero faculty, zero college admin.
                 </h4>
                 <p className="mt-0.5 text-[13px] sm:text-[13.5px] text-slate-400">
-                  Manage club patronage and event approvals from a dedicated faculty space of your own.
+                  Built strictly for students—start your own Chapters, host events, and speak freely with verified batchmates and seniors.
                 </p>
               </div>
             </div>
             <button
               type="button"
-              onClick={onOpenFaculty}
+              onClick={onOpenJoin}
               className="w-full sm:w-auto shrink-0 inline-flex h-11 items-center justify-center gap-2 rounded-full bg-white px-5 text-[13.5px] font-bold text-slate-950 hover:bg-slate-100 transition-colors"
             >
-              <span>Faculty on ClgVibe</span>
+              <span>Verify as a Student</span>
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>

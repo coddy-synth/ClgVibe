@@ -9,7 +9,6 @@ import {
   Share,
   ShieldCheck,
   CheckCircle2,
-  GraduationCap,
 } from 'lucide-react';
 import { COLLEGES_LIST } from '../data/campusData';
 
@@ -20,8 +19,6 @@ interface CollegeLaunchpadProps {
   onCloseJoin: () => void;
   appOpen: boolean;
   onCloseApp: () => void;
-  facultyOpen: boolean;
-  onCloseFaculty: () => void;
   onOpenJoin: () => void;
   onOpenApp: () => void;
 }
@@ -31,8 +28,6 @@ export const CollegeLaunchpad: React.FC<CollegeLaunchpadProps> = ({
   onCloseJoin,
   appOpen,
   onCloseApp,
-  facultyOpen,
-  onCloseFaculty,
   onOpenJoin,
   onOpenApp,
 }) => {
@@ -313,37 +308,6 @@ export const CollegeLaunchpad: React.FC<CollegeLaunchpadProps> = ({
                 </p>
               </div>
             )}
-          </div>
-        </div>
-      )}
-
-      {/* MODAL 3: FACULTY ON CLGVIBE */}
-      {facultyOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-md p-4">
-          <div className="relative w-full max-w-md rounded-3xl border border-white/15 bg-[#0f111a] p-6 sm:p-7 text-white shadow-2xl">
-            <button
-              type="button"
-              onClick={onCloseFaculty}
-              className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-slate-300 hover:bg-white/20"
-            >
-              <X className="h-4 w-4" />
-            </button>
-            <GraduationCap className="h-8 w-8 text-[#0095f6]" />
-            <h3 className="mt-3 font-display text-[21px] font-bold">
-              Faculty on ClgVibe
-            </h3>
-            <p className="mt-2 text-[13.5px] leading-relaxed text-slate-300">
-              Advise your students’ Chapters and approve their events, from a dedicated faculty space of your own.
-            </p>
-            <a
-              href="https://clgvibe.com/faculty"
-              target="_blank"
-              rel="noreferrer"
-              className="mt-5 flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#0095f6] text-[14px] font-bold text-white"
-            >
-              <span>Open Faculty Portal</span>
-              <ArrowRight className="h-4 w-4" />
-            </a>
           </div>
         </div>
       )}

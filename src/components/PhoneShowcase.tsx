@@ -259,7 +259,7 @@ export const PhoneShowcase: React.FC<PhoneShowcaseProps> = ({
                     10/10 Chapter Backers
                   </p>
                   <p className="text-[8px] sm:text-[9.5px] text-cyan-300">
-                    ✓ Faculty Approved
+                    ✓ 100% Student-Run
                   </p>
                 </div>
               </div>
@@ -591,7 +591,7 @@ export const PhoneShowcase: React.FC<PhoneShowcaseProps> = ({
                       </div>
                     </div>
                     <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[7.5px] font-bold text-emerald-400">
-                      Advisor ✓
+                      Student-Run ✓
                     </span>
                   </div>
                   <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
