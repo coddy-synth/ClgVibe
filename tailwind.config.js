@@ -1,46 +1,51 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: 'class',
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
         display: ['Lexend', 'Inter', 'sans-serif'],
-        serif: ['Playfair Display', 'Georgia', 'serif'],
-        hand: ['Caveat', 'cursive'],
-        mono: ['JetBrains Mono', 'monospace'],
+        brand: ['Pacifico', 'cursive'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
       },
       colors: {
         vibe: {
           DEFAULT: '#0095f6',
-          hover: '#0081d6',
-          indigo: '#4f46e5',
-          emerald: '#10b981',
-          amber: '#f59e0b',
-          rose: '#f43f5e',
-        }
+          dark: '#0077c2',
+          soft: '#e8f4ff',
+          sky: '#5ca9ff',
+          violet: '#9099fc',
+          amber: '#facb7b',
+          mint: '#89f9e8',
+        },
+        ink: {
+          DEFAULT: '#1d1d1f',
+          soft: '#5b5b63',
+          mute: '#8e8e96',
+          night: '#0d0d0f',
+        },
       },
-      animation: {
-        'marquee': 'marquee 34s linear infinite',
-        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'float': 'float 5s ease-in-out infinite',
+      boxShadow: {
+        phone: '0 40px 80px -20px rgba(0,60,120,0.35), 0 18px 36px -18px rgba(0,0,0,0.35)',
+        card: '0 10px 30px -10px rgba(10,40,80,0.18)',
+        pop: '0 18px 40px -12px rgba(0,40,90,0.35)',
       },
       keyframes: {
         marquee: {
-          '0%': { transform: 'translateX(0%)' },
+          '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' },
         },
-        float: {
-          '0%, 100%': { transform: 'translateY(0px)' },
-          '50%': { transform: 'translateY(-6px)' },
-        }
-      }
+        floaty: {
+          '0%,100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
+      },
+      animation: {
+        marquee: 'marquee 38s linear infinite',
+        floaty: 'floaty 5s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
-}
-
+};
